@@ -1,2 +1,2 @@
-grep "b,\|g," ~/Jurgen/nextActions/nextActions.csv |  shuf -n 1 
+grep "b,\|g," ~/joereddington.com/Jurgen/nextActions/nextActions.csv |  shuf -n 1 
 for ((i=5*60;i>=-600;i--));do echo -n $i;echo -n "  ";sleep 1;done

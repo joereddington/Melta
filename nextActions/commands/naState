@@ -39,12 +39,12 @@ global config
 def itterateProject(color):
    print color, "entered checkExists"
    config = ConfigParser.RawConfigParser()
-   config.read(os.environ['JURGEN']+'Jurgen/nextActions/logs/state.cfg')
+   config.read(os.environ['JURGEN']+'joereddington.com/Jurgen/nextActions/logs/state.cfg')
    if checkExists('Update Projects: '+color):
      print "goal exists so we update the time" 
      config.set('projects',color+'lastupdate',time.time())
      config.set('projects',color+'lastupdatestring',str(datetime.now()))
-     with open(os.environ['JURGEN']+'Jurgen/nextActions/logs/state.cfg', 'wb') as configfile:
+     with open(os.environ['JURGEN']+'joereddington.com/Jurgen/nextActions/logs/state.cfg', 'wb') as configfile:
    	   config.write(configfile)
    else:
      timeOfLastUpdate= config.getfloat('projects',color+'lastupdate')
@@ -52,7 +52,7 @@ def itterateProject(color):
  #     print 'oldest task ', getOldestTask()
      if getOldestTask()>timeOfLastUpdate:
 	print "creating update projects goal"
-   	os.system(os.environ['JURGEN']+"Jurgen/nextActions/commands/naCron \"Update Projects: "+color+"\" 5 t")
+   	os.system(os.environ['JURGEN']+"joereddington.com/Jurgen/nextActions/commands/naCron \"Update Projects: "+color+"\" 5 t")
      else: 
    	#nothing to see here#
 	print "nothing to see here" 

@@ -1,8 +1,8 @@
-date >> ~/Jurgen/nextActions/logs/changes_to_next_Actions.txt
-diff  ~/Jurgen/nextActions/nextActions.csv  ~/Jurgen/nextActions/logs/lastActions.csv | grep "<\\|>" >> ~/Jurgen/nextActions/logs/changes_to_next_Actions.txt
-cp  ~/Jurgen/nextActions/nextActions.csv  ~/Jurgen/nextActions/logs/lastActions.csv
+date >> ~/joereddington.com/Jurgen/nextActions/logs/changes_to_next_Actions.txt
+diff  ~/joereddington.com/Jurgen/nextActions/nextActions.csv  ~/joereddington.com/Jurgen/nextActions/logs/lastActions.csv | grep "<\\|>" >> ~/joereddington.com/Jurgen/nextActions/logs/changes_to_next_Actions.txt
+cp  ~/joereddington.com/Jurgen/nextActions/nextActions.csv  ~/joereddington.com/Jurgen/nextActions/logs/lastActions.csv
 #new thing
-date >> ~/Jurgen/nextActions/logs/changes_to_next_Actions_bare.txt
-grep -o "\".*\"" ~/Jurgen/nextActions/nextActions.csv | sort  > ~/Jurgen/nextActions/logs/nextActions.skin
-diff  ~/Jurgen/nextActions/logs/nextActions.skin  ~/Jurgen/nextActions/logs/lastActions.skin | grep "<\\|>" | sort >> ~/Jurgen/nextActions/logs/changes_to_next_Actions_bare.txt
-cp  ~/Jurgen/nextActions/logs/nextActions.skin  ~/Jurgen/nextActions/logs/lastActions.skin
+date >> ~/joereddington.com/Jurgen/nextActions/logs/changes_to_next_Actions_bare.txt
+grep -o "\".*\"" ~/joereddington.com/Jurgen/nextActions/nextActions.csv | sort  > ~/joereddington.com/Jurgen/nextActions/logs/nextActions.skin
+diff  ~/joereddington.com/Jurgen/nextActions/logs/nextActions.skin  ~/joereddington.com/Jurgen/nextActions/logs/lastActions.skin | grep "<\\|>" | sort >> ~/joereddington.com/Jurgen/nextActions/logs/changes_to_next_Actions_bare.txt
+cp  ~/joereddington.com/Jurgen/nextActions/logs/nextActions.skin  ~/joereddington.com/Jurgen/nextActions/logs/lastActions.skin
