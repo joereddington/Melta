@@ -1,0 +1,11 @@
+
+
+
+if [ `hostname` = "blout" ]; then 
+echo "0, 0," "\"$1\""", "$(date -d " - $2 days" +" %Y-%m-%d (%a) - %H:%M:%S") >> ~/Jurgen/nextActions/nextActions.csv
+echo "0, 0," "\"$1\""", "$(date -d " - $2 days" +" %Y-%m-%d (%a) - %H:%M:%S") >> ~/Jurgen/nextActions/logs/all_added_actions.csv
+else 
+echo "0, 0," "\"$1\""", "$(date -v $2d +" %Y-%m-%d (%a) - %H:%M:%S") >> ~/Jurgen/nextActions/nextActions.csv
+echo "0, 0," "\"$1\""", "$(date -v $2d +" %Y-%m-%d (%a) - %H:%M:%S") >> ~/Jurgen/nextActions/logs/all_added_actions.csv
+
+fi

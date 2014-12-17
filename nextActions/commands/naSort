@@ -1,0 +1,25 @@
+#!/usr/bin/python
+import csv
+import time
+import datetime
+import operator
+import io
+import os
+from naLibSorting import  sortTasksCSV 
+
+
+def printSortedTasks():
+	tasklist=sortTasksCSV()
+	for row in tasklist:
+	   toprint= str(row[0]).strip()+ ", "+ row[1].strip()+", \""+ row[2]+"\", "+ row[3]
+	   if len(row)==5:  
+		toprint=toprint+", "+row[4]
+	   print toprint
+	
+
+
+
+
+if __name__ == '__main__': printSortedTasks()
+
+

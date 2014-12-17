@@ -1,0 +1,2 @@
+echo "0, 0," "\"$1\""", "$(date +" %Y-%m-%d (%a) - %H:%M:%S"), X >> ~/joereddington.com/Jurgen/nextActions/nextActions.csv
+echo "0, 0," "\"$1\""", "$(date +" %Y-%m-%d (%a) - %H:%M:%S"), X >> ~/joereddington.com/Jurgen/nextActions/logs/all_added_actions.csv
