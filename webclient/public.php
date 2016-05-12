@@ -9,7 +9,6 @@
 <table id="nextActions" border=1 padding=0>
 <?php
 $row = 0;
-$running_total=0;
 $handle = fopen("/home/joereddington/Jurgen/nextActions/nextActions.csv", "r");
 while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
    for ($c=0; $c <= $row; $c++)
@@ -19,6 +18,12 @@ $task=$data[3];
 if (in_array("0",$data)){
 $task="------------------------------";
 }
+$email = "/[^@\s]*@[^@\s]*\.[^@\s]*/";
+$url = "/[a-zA-Z]*[:\/\/]*[A-Za-z0-9\-_]+\.+[A-Za-z0-9\.\/%&=\?\-_]+/i";
+$replacement = "[removed]";
+$task=preg_replace($email, $replacement, $task);
+$task=preg_replace($url, $replacement, $task);
+
 $running_total+=$data[2];
     print("<TR>");
     print("<TD>".$data[0]." </td>");
