@@ -15,12 +15,16 @@ while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
    for ($c=0; $c <= $row; $c++)
 {
 $pri=7-$data[0];
+$task=$data[3];
+if (in_array("0",$data)){
+$task="------------------------------";
+}
 $running_total+=$data[2];
     print("<TR>");
     print("<TD>".$data[0]." </td>");
     print("<TD>".$data[1]." </td>");
     print("<TD>".$data[2]." </td>");
-    print("<TD>".$data[3]." </td>");
+    print("<TD>".$task." </td>");
     print("<TD>".$data[4]." </td>");
     print("</TR>"); 
 }
