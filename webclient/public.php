@@ -19,10 +19,12 @@ if (in_array("0",$data)){
 $task="------------------------------";
 }
 $email = "/[^@\s]*@[^@\s]*\.[^@\s]*/";
+$num = "/([0-9][0-9][0-9]* )+[0-9]*/";
 $url = "/[a-zA-Z]*[:\/\/]*[A-Za-z0-9\-_]+\.+[A-Za-z0-9\.\/%&=\?\-_]+/i";
 $replacement = "[removed]";
 $task=preg_replace($email, $replacement, $task);
 $task=preg_replace($url, $replacement, $task);
+$task=preg_replace($num, $replacement, $task);
 
 $running_total+=$data[2];
     print("<TR>");
