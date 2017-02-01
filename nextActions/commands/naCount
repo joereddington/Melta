@@ -1,33 +1,37 @@
 #!/usr/bin/python
-import csv
-import time
-import datetime
-import os
-from naLibSorting import  sortTasksCSV 
+from na_lib_sorting import get_sorted_actions
+from na_lib_sorting import get_action_age_info
+import argparse
 
-def getTaskAges():
-	tasklist=sortTasksCSV()
-	now=0
-	dayold=0
-	threedayold=0
-	weekold=0
-	for row in tasklist:
-		try:
-			datestring=row[3]
-			dateOfTask=time.strptime(datestring.strip(),'%Y-%m-%d (%a) -  %H:%M:%S')
-			age=time.time()- time.mktime(dateOfTask)
-			now=now+1
-			if age>60*60*24:
-				dayold=dayold+1
-			if age>60*60*24*3:
-				threedayold=threedayold+1
-			if age>60*60*24*7:
-				weekold=weekold+1
-		except : 
-			print row
 
-			pass
-	print str(now)+" "+ str(datetime.date.today()) +" "+str(int(time.time()))+" "+ str(weekold)+" "+str(dayold)+" "+str(threedayold)
-	return (now,dayold,threedayold,weekold)
+def setup_argument_list():
+    "creates and parses the argument list for naCount"
+    parser = argparse.ArgumentParser(
+        description="prints out the number of nextactions of each age in the current nextActions file")
+    parser.add_argument('-c', nargs="?",
+                        help="if context_filter is activated then only actions in the relevant contexts (contexts are generally in 'bgthop0ry') are counted")
+    parser.add_argument(
+        '-n', nargs="?", help="reverse context filter, eliminates certain contexts from the count")
+    return parser.parse_args()
 
-if __name__ == '__main__': getTaskAges()
+
+def filter_and_print_actions(args):
+    "fetches the actions and runs a filter on them depending on the arguments"
+    tasks = get_sorted_actions()
+    if args.c:
+        tasks = [i for i in tasks if i[1] in args.c]
+    if args.n:
+        tasks = [i for i in tasks if i[1] not in args.n]
+    tasks_to_print=get_action_age_info(tasks)
+    percent = 100-(100*float(tasks_to_print[4])/float(tasks_to_print[0]))
+    print "%d %s %d %d %d %d" % tasks_to_print,  " 24 hour percentage is: %.1f%%" % percent
+
+
+def print_count_with_args():
+    "prints out the number of nextactions of each age in the current nextActions file"
+    args = setup_argument_list()
+    filter_and_print_actions(args)
+
+
+if __name__ == '__main__':
+    print_count_with_args()

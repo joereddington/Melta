@@ -1,0 +1,73 @@
+#!/usr/bin/python
+import csv
+import time
+import datetime
+import operator
+import io
+import os
+from na_lib_sorting import  get_sorted_actions
+import sys
+import na_lib
+
+
+def get_all_tasks():
+    "returns a sorted list of nextActions"
+    with open(os.environ['JURGEN'] + 'Jurgen/nextActions/all_tasks.csv', 'rU') as actions_file:
+        reader = csv.reader(actions_file, skipinitialspace=True)
+        lines = filter(None, reader)
+#        tasklist = sorted(lines, key=operator.itemgetter(4), reverse=True)
+        return lines
+
+
+def print_sorted_tasks():
+	tasklist=get_sorted_actions()
+	for row in tasklist:
+	   toprint=  "%s, %s, %2s, \"%s\", %s, %s" % (row[0].strip(),  row[1].strip(), row[2], row[3] , row[4], row[5])
+	   if len(row)==7:
+		toprint=toprint+", "+row[6]
+	   print toprint
+
+if __name__ == '__main__':
+
+    all_tasks_from_file=get_all_tasks()
+    all_tasks={}
+    exit=False
+    for task in all_tasks_from_file:
+	#print task
+        task_dict = {'action': task[4], 'date': task[6], 'priority': task[1], 'context': task[2], 'time':task[3], 'lastseen':task[0] }
+        if task[5] in all_tasks:
+            print str(task[5])+"already exists!"
+	    print all_tasks[task[5]]
+	    print task
+	    date = time.strftime("%Y-%m-%d (%a) - %H:%M:%S")
+	    toprint = "4, t, 15, \"Ingestigate problem with naUpdate\", 99999999, %s\n" % (date)
+	    na_lib.write_to_file(toprint)
+            exit=True
+        all_tasks[task[5]] =task_dict
+    if exit:
+        sys.exit()
+    tasklist=get_sorted_actions()
+    for task in  tasklist:
+	#print task[4]
+	if task[4] not in all_tasks:
+		all_tasks[task[4]] = {'action': "", 'date': "", 'priority': "", 'context': "", 'time':"", 'lastseen':"" }
+		#In case there is a task in next actions that isn't in all_actions (shouldn't happen but sometimes does.
+	if (task[4]!="-1"):
+		all_tasks[task[4]]['lastseen']=time.strftime("%Y-%m-%d (%a) - %H:%M:%S")
+		all_tasks[task[4]]['action']=task[3]
+		all_tasks[task[4]]['context']=task[1]
+		all_tasks[task[4]]['priority']=task[0]
+		all_tasks[task[4]]['time']=task[2]
+		record=all_tasks[task[4]]
+#        print "{}, {}, {}, {}, \"{}\", {}, {}".format(record['lastseen'],record['priority'],record['context'],record['time'], record['action'],task[4],record['date'])
+    with open(os.environ['JURGEN'] + 'Jurgen/nextActions/all_tasks.csv', 'w') as actions_file:
+        for key in all_tasks.keys():
+            record=all_tasks[key]
+#	    print key
+	    if ( record == -1):
+		continue
+            actions_file.write("{}, {}, {}, {}, \"{}\", {}, {}\n".format(record['lastseen'],record['priority'],record['context'],record['time'], record['action'],key,record['date']))
+
+
+
+

@@ -6,20 +6,20 @@ import datetime
 from operator import itemgetter
 
 re_job_number = re.compile(r'\d+')
-joblist =[]
+joblist = []
 for atq_line in subprocess.Popen(['atq'], stdout=subprocess.PIPE).stdout:
     job_number = re_job_number.search(atq_line).group()
-    date_string= atq_line[len(job_number):].strip()
-    result=""
+    date_string = atq_line[len(job_number):].strip()
+    result = ""
     for at_line in subprocess.Popen(['at', '-c', job_number], stdout=subprocess.PIPE).stdout:
         if at_line.startswith('na '):
-            result=result+at_line.strip()+'\n'
-    result=result+ '-' * 40
-    item=(date_string,  result)
+            result += at_line.strip() + '\n'
+    result += '-' * 40
+    item = (date_string,  result)
     joblist.append(item)
-joblist.sort(key=lambda item: datetime.datetime.strptime(item[0], '%a %b %d %H:%M:%S %Y a joereddington'))
+joblist.sort(key=lambda item: datetime.datetime.strptime(
+    item[0], '%a %b %d %H:%M:%S %Y a joereddington'))
 
-for x in joblist: 
-   print x[0]
-   print x[1]
-
+for x in joblist:
+    print x[0]
+    print x[1]

@@ -1,0 +1,1 @@
+grep -h -A1000 "$(date --date='$1 day ago' +"%a %b %e")" $JURGEN/Jurgen/nextActions/logs/changes_to_next_Actions_bare.txt | grep ">" 

@@ -1,0 +1,3 @@
+cd $JURGEN/Jurgen/nextActions
+git add nextActions.csv
+git commit -m "Updating nextActions by cron" 

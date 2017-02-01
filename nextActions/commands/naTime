@@ -1,0 +1,63 @@
+#!/usr/bin/python
+from na_lib_sorting import get_sorted_actions
+from na_lib_sorting import get_action_age_info
+from na_lib_sorting import TIMESTAMP_FORMAT
+import argparse
+import time
+import datetime
+
+
+
+def filter_and_print_actions(args, text, index=0):
+    "fetches the actions and runs a filter on them depending on the arguments"
+    tasks = get_sorted_actions()
+    if args:
+        tasks = [i for i in tasks if i[index] in args]
+    print_get_action_age_info_with_priority(tasks,text)
+
+
+def print_count_with_args():
+    "prints out the number of nextactions of each age in the current nextActions file"
+    filter_and_print_actions([],"Total")
+    print "---------------------"
+    filter_and_print_actions(['b'], "Anywhere",1)
+    filter_and_print_actions(['h'], "Home", 1)
+    filter_and_print_actions(['t'], "Disconnected" ,1)
+    filter_and_print_actions(['g'], "Connected" ,1)
+    filter_and_print_actions(['y'], "Browser" ,1)
+    filter_and_print_actions(['r'], "Email", 1)
+    print "---------------------"
+    filter_and_print_actions(['1'], "1", 0)
+    filter_and_print_actions(['2'], "2", 0)
+    filter_and_print_actions(['3'], "3", 0)
+    filter_and_print_actions(['4'], "4", 0)
+    filter_and_print_actions(['5'], "5", 0)
+    filter_and_print_actions(['6'], "6", 0)
+
+def print_get_action_age_info_with_priority(tasklist,text):
+    hope=get_action_age_info_with_priority(tasklist)
+    print "{}: {} ({}:{}) {}".format(text,hope[0],hope[1],hope[2],hope[3]) 
+
+def get_action_age_info_with_priority(tasklist):
+    "prints out the number of nextactions of each age in a current nextactions"
+    running_total=0
+    blanks=0
+    tipping_point=""
+    for row in tasklist:
+        estimate = int(row[2])
+        if estimate == 0:
+            blanks+=1
+        running_total+=estimate
+	if (running_total>60):
+	    if (tipping_point in ""):
+		tipping_point =row[3]
+    #print tipping_point
+    hours=running_total //60
+    minutes=running_total -hours*60
+    return [running_total, hours, minutes, blanks]
+
+
+
+
+if __name__ == '__main__':
+    print_count_with_args()

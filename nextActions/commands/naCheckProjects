@@ -1,4 +1,4 @@
-/home/joereddington/joereddington.com/Jurgen/nextActions/commands/naLibCheckIndividualProject.sh B
-/home/joereddington/joereddington.com/Jurgen/nextActions/commands/naLibCheckIndividualProject.sh C
-/home/joereddington/joereddington.com/Jurgen/nextActions/commands/naLibCheckIndividualProject.sh F
-/home/joereddington/joereddington.com/Jurgen/nextActions/commands/naLibCheckIndividualProject.sh H
+#$JURGEN/Jurgen/nextActions/commands/naLibCheckIndividualProject.sh Play
+#$JURGEN/Jurgen/nextActions/commands/naLibCheckIndividualProject.sh Worth
+$JURGEN/Jurgen/nextActions/commands/naLibCheckIndividualProject.sh MakingPeopleHappy
+$JURGEN/Jurgen/nextActions/commands/naLibCheckIndividualProject.sh MindAndBody

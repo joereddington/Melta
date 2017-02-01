@@ -1,0 +1,2 @@
+clear; naSort | head -n $(naCount | cut -d ' ' -f 5)
+

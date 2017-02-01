@@ -1,2 +1,31 @@
-echo "0, 0," "\"$1\""", "$(date +" %Y-%m-%d (%a) - %H:%M:%S"), X >> ~/joereddington.com/Jurgen/nextActions/nextActions.csv
-echo "0, 0," "\"$1\""", "$(date +" %Y-%m-%d (%a) - %H:%M:%S"), X >> ~/joereddington.com/Jurgen/nextActions/logs/all_added_actions.csv
+#!/usr/bin/python
+from na_lib_sorting import get_sorted_actions
+import na_lib
+import argparse
+import time
+import sys
+import csv
+import datetime
+import operator
+import io
+import os
+
+if __name__ == '__main__':
+        args=na_lib.setup_argument_list()
+        if (args.sort):
+            print print_sorted_tasks()
+            sys.exit()
+        date = time.strftime("%Y-%m-%d (%a) - %H:%M:%S")
+        value = na_lib.increatmentAndGetValue()
+        if args.action:
+            toprint = "%s, %s, %s, \"%s\", %s, %s\n" % (args.priority, args.context, args.time, args.action, value, date)
+            na_lib.write_to_archive(str(date)+", "+toprint)
+            if (args.echo):
+                print toprint
+            else:
+                na_lib.write_to_file(toprint)
+
+
+
+
+

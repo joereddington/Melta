@@ -5,21 +5,17 @@ import datetime
 import operator
 import io
 import os
-from naLibSorting import  sortTasksCSV 
+from na_lib_sorting import  get_sorted_actions 
 
 
-def printSortedTasks():
-	tasklist=sortTasksCSV()
+def print_sorted_tasks():
+	tasklist=get_sorted_actions()
 	for row in tasklist:
-	   toprint= str(row[0]).strip()+ ", "+ row[1].strip()+", \""+ row[2]+"\", "+ row[3]
-	   if len(row)==5:  
-		toprint=toprint+", "+row[4]
+	   toprint=  "%s, %s, %2s, \"%s\", %s, %s" % (row[0].strip(),  row[1].strip(), row[2], row[3] , row[4], row[5])
+	   if len(row)==7:  
+		toprint=toprint+", "+row[6]
 	   print toprint
 	
-
-
-
-
-if __name__ == '__main__': printSortedTasks()
+if __name__ == '__main__': print_sorted_tasks()
 
 
