@@ -1,8 +1,0 @@
-date >> $JURGEN/Jurgen/nextActions/logs/changes_to_next_Actions.txt
-diff  $JURGEN/Jurgen/nextActions/nextActions.csv  $JURGEN/Jurgen/nextActions/logs/lastActions.csv | grep "<\\|>" >> $JURGEN/Jurgen/nextActions/logs/changes_to_next_Actions.txt
-cp  $JURGEN/Jurgen/nextActions/nextActions.csv  $JURGEN/Jurgen/nextActions/logs/lastActions.csv
-#new thing
-date >> $JURGEN/Jurgen/nextActions/logs/changes_to_next_Actions_bare.txt
-grep -o "\".*\"" $JURGEN/Jurgen/nextActions/nextActions.csv | sort  > $JURGEN/Jurgen/nextActions/logs/nextActions.skin
-diff  $JURGEN/Jurgen/nextActions/logs/nextActions.skin  $JURGEN/Jurgen/nextActions/logs/lastActions.skin | grep "<\\|>" | sort >> $JURGEN/Jurgen/nextActions/logs/changes_to_next_Actions_bare.txt
-cp  $JURGEN/Jurgen/nextActions/logs/nextActions.skin  $JURGEN/Jurgen/nextActions/logs/lastActions.skin

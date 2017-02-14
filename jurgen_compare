@@ -1,0 +1,4 @@
+echo "highest today"
+grep "0$(date '+%y-%m-%d')" "$JURGEN/jurgen/data/priority.txt"  | sort -g -k 1,1 -k6,6n | tail -n1
+echo "current"
+melta count

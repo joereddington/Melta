@@ -1,4 +1,0 @@
-clear; 
-echo "Purple lines"
-naSort | head -n $(naCount | cut -d ' ' -f 6)
-

@@ -1,4 +1,0 @@
-grep -h -A1000 "$(date +"%a %b %e")" $JURGEN/Jurgen/nextActions/logs/changes_to_next_Actions_bare.txt | grep ">" >  $JURGEN/Jurgen/nextActions/logs/naToday$(date +"20%y-%b-%e").txt
-grep -h -A1000 "$(date +"%a %b %e")" $JURGEN/Jurgen/nextActions/logs/changes_to_next_Actions_bare.txt | grep ">" 
-
-

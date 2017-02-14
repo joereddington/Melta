@@ -1,1 +1,0 @@
-tail -n 100 ~/joereddington.com/Jurgen/tracking/results.txt | perl -pe's@(^\d+ [\d-]+ )(\d+)@$1 . scalar(localtime($2))@e;'

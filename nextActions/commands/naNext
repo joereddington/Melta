@@ -1,2 +1,0 @@
-naSort | head -n $(naCount | cut -d ' ' -f 6) |sort | head -n 1
-

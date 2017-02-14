@@ -1,3 +1,0 @@
-echo "Don't forgot that you can split the goal into two, of equal age"
-shuf -n 1 $JURGEN/Jurgen/nextActions/nextActions.csv
-for ((i=5*60;i>=-600;i--));do echo -n $i;echo -n "  ";sleep 1;done
