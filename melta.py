@@ -97,18 +97,21 @@ def days_old(row):
 	days=int(age/(seconds_in_day))
 	return days
 
+
+def tasks_this_old(tasklist, scorer, days):
+    count=0
+    for row in tasklist:
+        if days_old(row)>=days:
+            count += scorer(row)
+    return count
+
+
 def get_action_age_info_with_priority(tasklist, scorer=lambda x:7-int(x[0][-1]), time_print=True):
     "prints out the number of nextactions of each age in a current nextactions"
-    now, dayold, threedayold, weekold = (0, 0, 0, 0)
-    for row in tasklist:
-	now+=scorer(row)
-	days=days_old(row)
-        if days>=1:
-            dayold += scorer(row)
-            if days>=3:
-                threedayold += scorer(row)
-                if days>=7:
-                    weekold += scorer(row)
+    now=tasks_this_old(tasklist,scorer,0)
+    dayold=tasks_this_old(tasklist,scorer,1)
+    threedayold=tasks_this_old(tasklist,scorer,3)
+    weekold=tasks_this_old(tasklist,scorer,7)
     if time_print==True:
 	return (now, datetime.date.today(), time.time(), weekold, dayold, threedayold)
 
