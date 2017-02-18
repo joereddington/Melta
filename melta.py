@@ -11,7 +11,6 @@ import time
 import csv
 import json
 
-
 TIMESTAMP_FORMAT = '%y-%m-%d %H:%M'
 config = json.loads(open('config.json').read())
 NEXTACTIONS_LOC=config["jurgen_location"] + '/nextactions.md'
@@ -23,11 +22,18 @@ def get_sorted_actions():
     with open(NEXTACTIONS_LOC, 'rU') as actions_file:
         reader = csv.reader(actions_file, skipinitialspace=True)
         lines = filter(None, reader)
-        tasklist = sorted(lines, key=operator.itemgetter(4), reverse=True)
-        tasklist.sort(key=lambda item: datetime.datetime.strptime(
-            item[4], TIMESTAMP_FORMAT))
+        tasklist=[]
+        for line in lines:
+            task={}
+            task['timestamp']=line[4]
+            task['action']=line[3]
+            task['time']=int(line[2])
+            task['context']=line[1]
+            task['priority']=line[0][6:]
+            task['extra']=line[5:]
+            tasklist.append(task)
+        tasklist =sorted(tasklist,key=lambda item: item['timestamp'])
         return tasklist
-
 
 def write_to_file(toprint):
     with open(NEXTACTIONS_LOC, 'a') as actions_file:
@@ -36,13 +42,6 @@ def write_to_file(toprint):
 def write_to_archive(toprint):
     with open(ALLACTIONS_LOC, 'a') as actions_file:
         actions_file.write(toprint )
-
-
-
-
-
-
-
 
 def setup_argument_list():
     "creates and parses the argument list for naCount"
@@ -80,17 +79,17 @@ def print_actions(tasks):
 
 def print_time(tasks):
     running_total=0
-    for row in tasks:
-	running_total+=int(row[2])
+    for task in tasks:
+	running_total+=task['time']
     hours=running_total //60
     minutes=running_total -hours*60
     print "The total time for the set is {} minutes ({}:{})".format(running_total,hours,minutes)
 
 
 
-def days_old(row):
+def days_old(task):
 	seconds_in_day=60*60*24
-        datestring = row[4]
+        datestring = task['timestamp']
         timestamp_on_action = time.strptime( datestring.strip(), TIMESTAMP_FORMAT)
         age = time.time() - time.mktime(timestamp_on_action)
 	age = age+seconds_in_day*7#when we switched from origin to deadline
@@ -106,7 +105,7 @@ def tasks_this_old(tasklist, scorer, days):
     return count
 
 
-def get_action_age_info_with_priority(tasklist, scorer=lambda x:7-int(x[0][-1]), time_print=True):
+def get_action_age_info_with_priority(tasklist, scorer=lambda x:7-int(x['priority'][-1]), time_print=True):
     "prints out the number of nextactions of each age in a current nextactions"
     now=tasks_this_old(tasklist,scorer,0)
     dayold=tasks_this_old(tasklist,scorer,1)
@@ -114,27 +113,24 @@ def get_action_age_info_with_priority(tasklist, scorer=lambda x:7-int(x[0][-1]),
     weekold=tasks_this_old(tasklist,scorer,7)
     if time_print==True:
 	return (now, datetime.date.today(), time.time(), weekold, dayold, threedayold)
-
     return (now, weekold, dayold, threedayold)
 
 def print_random(tasklist):
-	row=random.choice(tasklist)
-	print  "%s, %s, %2s, \"%s\", %s" % (row[0].strip(),  row[1].strip(), row[2], row[3] , row[4])
+	task=random.choice(tasklist)
+	print_task(task)
 
 def print_next(tasklist):
-	row= sorted(tasklist)[0]
-	print  "%s, %s, %2s, \"%s\", %s" % (row[0].strip(),  row[1].strip(), row[2], row[3] , row[4])
+	task= sorted(tasklist)[0]
+	print_task(task)
 
 
 def print_sorted_tasks(tasklist):
-	for row in tasklist:
-	   toprint=  "%s, %s, %2s, \"%s\", %s" % (row[0].strip(),  row[1].strip(), row[2], row[3] , row[4])
-	   if len(row)==7:
-		toprint=toprint+", "+row[6]
-	   print toprint
+	for task in tasklist:
+	   print_task(task)
 
 
-
+def print_task(task):
+    print "- [ ] %s, %s, %2s, \"%s\", %s" % (task['priority'].strip(),  task['context'].strip(), task['time'], task['action'] , task['timestamp'])+ ''.join(task['extra'])
 
 def write_to_waiting_list(toprint):
        with open(WAITACTIONS_LOC, 'a') as actions_file:
