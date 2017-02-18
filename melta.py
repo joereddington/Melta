@@ -5,19 +5,18 @@ import argparse
 import csv
 import random
 import datetime
-import io
 import operator
 import os
 import time
-import sys
 import csv
+import json
 
 
 TIMESTAMP_FORMAT = '%y-%m-%d %H:%M'
-
-NEXTACTIONS_LOC=os.environ['JURGEN'] + 'Jurgen/nextactions.md'
-ALLACTIONS_LOC=os.environ['JURGEN'] + 'Jurgen/data/all_tasks.csv'
-WAITACTIONS_LOC=os.environ['JURGEN'] + 'Jurgen/data/waitactions.md'
+config = json.loads(open('config.json').read())
+NEXTACTIONS_LOC=config["jurgen_location"] + '/nextactions.md'
+ALLACTIONS_LOC=config["jurgen_location"] + '/data/all_tasks.csv'
+WAITACTIONS_LOC=config["jurgen_location"] + '/data/waitactions.md'
 
 def get_sorted_actions():
     "returns a sorted list of nextActions"
@@ -93,7 +92,7 @@ def days_old(row):
 	seconds_in_day=60*60*24
         datestring = row[4]
         timestamp_on_action = time.strptime( datestring.strip(), TIMESTAMP_FORMAT)
-        age = time.time() - time.mktime(timestamp_on_action) 
+        age = time.time() - time.mktime(timestamp_on_action)
 	age = age+seconds_in_day*7#when we switched from origin to deadline
 	days=int(age/(seconds_in_day))
 	return days
@@ -118,7 +117,7 @@ def get_action_age_info_with_priority(tasklist, scorer=lambda x:7-int(x[0][-1]),
 def print_random(tasklist):
 	row=random.choice(tasklist)
 	print  "%s, %s, %2s, \"%s\", %s" % (row[0].strip(),  row[1].strip(), row[2], row[3] , row[4])
-	
+
 def print_next(tasklist):
 	row= sorted(tasklist)[0]
 	print  "%s, %s, %2s, \"%s\", %s" % (row[0].strip(),  row[1].strip(), row[2], row[3] , row[4])
@@ -127,12 +126,12 @@ def print_next(tasklist):
 def print_sorted_tasks(tasklist):
 	for row in tasklist:
 	   toprint=  "%s, %s, %2s, \"%s\", %s" % (row[0].strip(),  row[1].strip(), row[2], row[3] , row[4])
-	   if len(row)==7:  
+	   if len(row)==7:
 		toprint=toprint+", "+row[6]
 	   print toprint
-	
 
-            
+
+
 
 def write_to_waiting_list(toprint):
        with open(WAITACTIONS_LOC, 'a') as actions_file:
@@ -147,12 +146,12 @@ def add(args):
             write_to_archive(str(date)+", "+toprint)
 	    if args.s:
 		    write_to_waiting_list(toprint)
-            else:	
+            else:
 		    write_to_file(toprint)
 
 
 
-if __name__ == '__main__':
+def run_melta():
     args = setup_argument_list()
     if args.action == "count":
         print_actions(filter_actions(args))
@@ -167,5 +166,8 @@ if __name__ == '__main__':
     elif args.action == "time":
         print_time(filter_actions(args))
     else:
-	print "Error, missing action" 
+	print "Error, missing action"
+
+if __name__ == '__main__':
+    run_melta()
 

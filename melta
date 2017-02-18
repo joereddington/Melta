@@ -1,2 +1,4 @@
 #!/usr/bin/env python
 import melta
+if __name__ == '__main__':
+    melta.run_melta()
