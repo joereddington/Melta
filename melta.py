@@ -12,7 +12,7 @@ import csv
 import json
 
 TIMESTAMP_FORMAT = '%y-%m-%d %H:%M'
-config = json.loads(open('config.json').read())
+config = json.loads(open(os.path.dirname(os.path.abspath(__file__))+'/config.json').read())
 NEXTACTIONS_LOC=config["jurgen_location"] + '/nextactions.md'
 ALLACTIONS_LOC=config["jurgen_location"] + '/data/all_tasks.csv'
 WAITACTIONS_LOC=config["jurgen_location"] + '/data/waitactions.md'
@@ -144,6 +144,7 @@ def add(args):
             toprint = "- [ ] %s, %s, %s, \"%s\", %s\n" % (args.priority, args.context, args.time, args.content, date)
             write_to_archive(str(date)+", "+toprint)
 	    if args.s:
+		    print toprint
 		    write_to_waiting_list(toprint)
             else:
 		    write_to_file(toprint)
