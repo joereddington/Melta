@@ -32,7 +32,7 @@ def get_sorted_actions():
             task['priority']=line[0][6:]
             task['extra']=line[5:]
             tasklist.append(task)
-        tasklist =sorted(tasklist,key=lambda item: item['timestamp'])
+        tasklist =sorted(tasklist,key=lambda item: item['priority']+item['timestamp'])
         return tasklist
 
 def write_to_file(toprint):
