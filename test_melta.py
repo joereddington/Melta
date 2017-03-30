@@ -10,7 +10,10 @@ class meltaTest(TestCase):
         self.assertEqual(len(list),80)
 
 
-
+    def test_sort_returns_oldest_p1(self):
+        "The sort returns the oldest member of the highest priority class"
+        list=melta.get_sorted_actions()
+        self.assertEqual(list[0]['action'],"Oldestp1")
 
 
 
