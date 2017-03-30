@@ -14,6 +14,7 @@ import json
 TIMESTAMP_FORMAT = '%y-%m-%d %H:%M'
 config = json.loads(open(os.path.dirname(os.path.abspath(__file__))+'/config.json').read())
 NEXTACTIONS_LOC=config["jurgen_location"] + '/nextactions.md'
+NEXTACTIONS_LOC='testinput/nextactions.md'
 ALLACTIONS_LOC=config["jurgen_location"] + '/data/all_tasks.csv'
 WAITACTIONS_LOC=config["jurgen_location"] + '/data/waitactions.md'
 
@@ -72,6 +73,7 @@ def filter_actions(args):
         tasks = [i for i in tasks if days_old(i)>=int(args.d)]
     return tasks
 
+
 def print_actions(tasks):
     count_items= get_action_age_info_with_priority(tasks, lambda x:1, False)
     pri_items= get_action_age_info_with_priority(tasks)
@@ -126,11 +128,11 @@ def print_next(tasklist):
 
 def print_sorted_tasks(tasklist):
 	for task in tasklist:
-	   print_task(task)
+	   print action_to_string(task)
 
 
-def print_task(task):
-    print "- [ ] %s, %s, %2s, \"%s\", %s" % (task['priority'].strip(),  task['context'].strip(), task['time'], task['action'] , task['timestamp'])+ ''.join(task['extra'])
+def action_to_string(task):
+    return "- [ ] %s, %s, %2s, \"%s\", %s" % (task['priority'].strip(),  task['context'].strip(), task['time'], task['action'] , task['timestamp'])+ ''.join(task['extra'])
 
 def write_to_waiting_list(toprint):
        with open(WAITACTIONS_LOC, 'a') as actions_file:

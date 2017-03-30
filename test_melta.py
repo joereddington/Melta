@@ -12,9 +12,17 @@ class meltaTest(TestCase):
 
     def test_sort_returns_oldest_p1(self):
         "The sort returns the oldest member of the highest priority class"
-        list=melta.get_sorted_actions()
-        self.assertEqual(list[0]['action'],"Oldestp1")
+        nalist=melta.get_sorted_actions()
+        self.assertEqual(nalist[0]['action'],"Oldestp1")
 
+    def test_sort_regression_1(self):
+        nalist=melta.get_sorted_actions()
+        nalist_formated = [] #   [[melta.action_to_string(x) for x in nalist]]
+        for x in nalist:
+            nalist_formated.append(melta.action_to_string(x))
+        naList_formated_string= "\n".join(nalist_formated)
+        self.maxDiff = None
+        self.assertMultiLineEqual(open('testinput/nextactions.md.sorted').read().strip(),naList_formated_string.strip())
 
 
 if __name__=="__main__":
