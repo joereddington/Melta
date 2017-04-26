@@ -14,7 +14,6 @@ import json
 TIMESTAMP_FORMAT = '%y-%m-%d %H:%M'
 config = json.loads(open(os.path.dirname(os.path.abspath(__file__))+'/config.json').read())
 NEXTACTIONS_LOC=config["jurgen_location"] + '/nextactions.md'
-NEXTACTIONS_LOC='testinput/nextactions.md'
 ALLACTIONS_LOC=config["jurgen_location"] + '/data/all_tasks.csv'
 WAITACTIONS_LOC=config["jurgen_location"] + '/data/waitactions.md'
 
@@ -66,9 +65,9 @@ def filter_actions(args):
     "fetches the actions and runs a filter on them depending on the arguments"
     tasks = get_sorted_actions()
     if args.c:
-        tasks = [i for i in tasks if i[1] in args.c]
+        tasks = [i for i in tasks if i['context'] in args.c]
     if args.n:
-        tasks = [i for i in tasks if i[1] not in args.n]
+        tasks = [i for i in tasks if i['context'] not in args.n]
     if args.d:
         tasks = [i for i in tasks if days_old(i)>=int(args.d)]
     return tasks
@@ -123,7 +122,7 @@ def print_random(tasklist):
 
 def print_next(tasklist):
 	task= sorted(tasklist)[0]
-	print_task(task)
+	print action_to_string(task)
 
 
 def print_sorted_tasks(tasklist):
