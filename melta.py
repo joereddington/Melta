@@ -14,7 +14,6 @@ import json
 TIMESTAMP_FORMAT = '%y-%m-%d %H:%M'
 config = json.loads(open(os.path.dirname(os.path.abspath(__file__))+'/config.json').read())
 NEXTACTIONS_LOC=config["jurgen_location"] + '/nextactions.md'
-NEXTACTIONS_LOC='testinput/nextactions.md'
 ALLACTIONS_LOC=config["jurgen_location"] + '/data/all_tasks.csv'
 WAITACTIONS_LOC=config["jurgen_location"] + '/data/waitactions.md'
 
