@@ -57,7 +57,8 @@ def setup_argument_list():
     parser.add_argument('-c', nargs="?", help="if context_filter is activated then only actions in the relevant contexts (contexts are generally in 'bgthop0ry') are counted")
     parser.add_argument('-m', action='store_true', help="show only marked tasks")
     parser.add_argument('-d', nargs="?" , help="Show only tasks that are at least this many days old")
-    parser.add_argument( '-n', nargs="?", help="reverse context filter, eliminates certain contexts from the count")
+    parser.add_argument( '-n', action='store_true', help="reverse context filter, eliminates certain contexts from the count")
+    parser.add_argument( '-o', action='store_true', help="Open tasks")
     parser.add_argument( '-s', action='store_true', help="use if called by a script or cron")
     return parser
 
@@ -69,8 +70,9 @@ def filter_actions(args):
     if args.c:
         tasks = [i for i in tasks if i[1] in args.c]
     if args.m:
-        print "hello"
         tasks = [i for i in tasks if i['completed'] =="x"]
+    if args.o:
+        tasks = [i for i in tasks if i['completed'] ==" "]
     if args.n:
         tasks = [i for i in tasks if i[1] not in args.n]
     if args.d:

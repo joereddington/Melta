@@ -47,7 +47,7 @@ class meltaTest(TestCase):
     def test_output_only_open(self):
         nalist=melta.get_sorted_actions()
         parser = melta.setup_argument_list()
-        args=parser.parse_args(['sort','-m','-n'])
+        args=parser.parse_args(['sort','-o'])
         nalist=melta.filter_actions(args)
         nalist_formated = [] #   [[melta.action_to_string(x) for x in nalist]]
         for x in nalist:
