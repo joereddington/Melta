@@ -44,6 +44,19 @@ class meltaTest(TestCase):
         self.maxDiff = None
         self.assertMultiLineEqual(open('testinput/nextactions.md.sorted.completed').read().strip(),naList_formated_string.strip())
 
+    def test_output_only_open(self):
+        nalist=melta.get_sorted_actions()
+        parser = melta.setup_argument_list()
+        args=parser.parse_args(['sort','-m','-n'])
+        nalist=melta.filter_actions(args)
+        nalist_formated = [] #   [[melta.action_to_string(x) for x in nalist]]
+        for x in nalist:
+            nalist_formated.append(melta.action_to_string(x))
+        naList_formated_string= "\n".join(nalist_formated)
+        self.maxDiff = None
+        self.assertMultiLineEqual(open('testinput/nextactions.md.sorted.open').read().strip(),naList_formated_string.strip())
+
+
 
 
 
