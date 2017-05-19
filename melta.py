@@ -31,6 +31,7 @@ def get_sorted_actions():
             task['context']=line[1]
             task['priority']=line[0][6:]
             task['extra']=line[5:]
+            task['completed']=line[0][3:4]
             tasklist.append(task)
         tasklist =sorted(tasklist,key=lambda item: item['priority']+item['timestamp'])
         return tasklist
@@ -131,7 +132,7 @@ def print_sorted_tasks(tasklist):
 
 
 def action_to_string(task):
-    return "- [ ] %s, %s, %2s, \"%s\", %s" % (task['priority'].strip(),  task['context'].strip(), task['time'], task['action'] , task['timestamp'])+ ''.join(task['extra'])
+    return "- [%s] %s, %s, %2s, \"%s\", %s" % (task['completed'], task['priority'].strip(),  task['context'].strip(), task['time'], task['action'] , task['timestamp'])+ ''.join(task['extra'])
 
 def write_to_waiting_list(toprint):
        with open(WAITACTIONS_LOC, 'a') as actions_file:

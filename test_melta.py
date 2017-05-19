@@ -24,6 +24,15 @@ class meltaTest(TestCase):
         self.maxDiff = None
         self.assertMultiLineEqual(open('testinput/nextactions.md.sorted').read().strip(),naList_formated_string.strip())
 
+    def test_completed_mark_on(self):
+        nalist=melta.get_sorted_actions()
+        self.assertEqual(nalist[0]['completed'],"x")
+
+    def test_completed_mark_on(self):
+        nalist=melta.get_sorted_actions()
+        self.assertEqual(nalist[1]['completed']," ")
+
+
 
 if __name__=="__main__":
     melta.NEXTACTIONS_LOC='testinput/nextactions.md'
