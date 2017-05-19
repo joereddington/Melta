@@ -26,7 +26,11 @@ class meltaTest(TestCase):
 
     def test_completed_mark_on(self):
         nalist=melta.get_sorted_actions()
-        self.assertEqual(nalist[0]['completed'],True)
+        self.assertEqual(nalist[0]['completed'],"x")
+
+    def test_completed_mark_on(self):
+        nalist=melta.get_sorted_actions()
+        self.assertEqual(nalist[1]['completed']," ")
 
 
 
