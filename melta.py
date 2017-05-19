@@ -132,7 +132,7 @@ def print_sorted_tasks(tasklist):
 
 
 def action_to_string(task):
-    return "- [ ] %s, %s, %2s, \"%s\", %s" % (task['priority'].strip(),  task['context'].strip(), task['time'], task['action'] , task['timestamp'])+ ''.join(task['extra'])
+    return "- [%s] %s, %s, %2s, \"%s\", %s" % (task['completed'], task['priority'].strip(),  task['context'].strip(), task['time'], task['action'] , task['timestamp'])+ ''.join(task['extra'])
 
 def write_to_waiting_list(toprint):
        with open(WAITACTIONS_LOC, 'a') as actions_file:
