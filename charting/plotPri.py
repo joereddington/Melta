@@ -8,7 +8,7 @@ import os
 #1 merge this with the other graph files - make a class that records the source, destination, and time period and then works. 
 
 
-SOURCE= os.environ['JURGEN']+"meta/tracking/priority.txt"
+SOURCE= os.environ['JURGEN']+"Jurgen/data/priority.txt"
 DEST = "/home/joereddington/joereddington.com/stress/priority.png"
 DAYS = 7
 SMOOTHING=5

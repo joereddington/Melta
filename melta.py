@@ -55,10 +55,12 @@ def setup_argument_list():
     parser.add_argument("priority", nargs='?', default="0", help='From 0 to 7 how important is this action')
     parser.add_argument("time", nargs='?', default="0", help='How long in minutes is this likely to take')
     parser.add_argument('-c', nargs="?", help="if context_filter is activated then only actions in the relevant contexts (contexts are generally in 'bgthop0ry') are counted")
+    parser.add_argument('-m', action='store_true', help="show only marked tasks")
     parser.add_argument('-d', nargs="?" , help="Show only tasks that are at least this many days old")
-    parser.add_argument( '-n', nargs="?", help="reverse context filter, eliminates certain contexts from the count")
+    parser.add_argument( '-n', action='store_true', help="reverse context filter, eliminates certain contexts from the count")
+    parser.add_argument( '-o', action='store_true', help="Open tasks")
     parser.add_argument( '-s', action='store_true', help="use if called by a script or cron")
-    return parser.parse_args()
+    return parser
 
 
 
@@ -67,6 +69,10 @@ def filter_actions(args):
     tasks = get_sorted_actions()
     if args.c:
         tasks = [i for i in tasks if i['context'] in args.c]
+    if args.m:
+        tasks = [i for i in tasks if i['completed'] =="x"]
+    if args.o:
+        tasks = [i for i in tasks if i['completed'] ==" "]
     if args.n:
         tasks = [i for i in tasks if i['context'] not in args.n]
     if args.d:
@@ -154,7 +160,8 @@ def add(args):
 
 
 def run_melta():
-    args = setup_argument_list()
+    parser = setup_argument_list()
+    args=parser.parse_args()
     if args.action == "count":
         print_actions(filter_actions(args))
     elif args.action == "sort":
