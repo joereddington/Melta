@@ -37,6 +37,7 @@ class meltaTest(TestCase):
         parser = melta.setup_argument_list()
         args=parser.parse_args(['sort','-m'])
         nalist=melta.filter_actions(args)
+        nalist_formated = [] #   [[melta.action_to_string(x) for x in nalist]]
         for x in nalist:
             nalist_formated.append(melta.action_to_string(x))
         naList_formated_string= "\n".join(nalist_formated)
