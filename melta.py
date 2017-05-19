@@ -58,7 +58,7 @@ def setup_argument_list():
     parser.add_argument('-d', nargs="?" , help="Show only tasks that are at least this many days old")
     parser.add_argument( '-n', nargs="?", help="reverse context filter, eliminates certain contexts from the count")
     parser.add_argument( '-s', action='store_true', help="use if called by a script or cron")
-    return parser.parse_args()
+    return parser
 
 
 
@@ -154,7 +154,8 @@ def add(args):
 
 
 def run_melta():
-    args = setup_argument_list()
+    parser = setup_argument_list()
+    args=parser.parse_args()
     if args.action == "count":
         print_actions(filter_actions(args))
     elif args.action == "sort":

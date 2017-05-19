@@ -32,6 +32,19 @@ class meltaTest(TestCase):
         nalist=melta.get_sorted_actions()
         self.assertEqual(nalist[1]['completed']," ")
 
+    def test_output_only_completed(self):
+        nalist=melta.get_sorted_actions()
+        parser = melta.setup_argument_list()
+        args=parser.parse_args(['sort','-m'])
+        nalist=melta.filter_actions(args)
+        for x in nalist:
+            nalist_formated.append(melta.action_to_string(x))
+        naList_formated_string= "\n".join(nalist_formated)
+        self.maxDiff = None
+        self.assertMultiLineEqual(open('testinput/nextactions.md.sorted.completed').read().strip(),naList_formated_string.strip())
+
+
+
 
 
 if __name__=="__main__":
