@@ -127,10 +127,6 @@ def print_random(tasklist):
 	task=random.choice(tasklist)
 	print_task(task)
 
-def print_next(tasklist):
-	task= sorted(tasklist)[0]
-	print action_to_string(task)
-
 
 def print_sorted_tasks(tasklist):
 	for task in tasklist:
@@ -171,7 +167,7 @@ def run_melta():
     elif args.action == "random":
         print_random(filter_actions(args))
     elif args.action == "next":
-        print_next(filter_actions(args))
+	print_sorted_tasks([filter_actions(args)[0]])
     elif args.action == "time":
         print_time(filter_actions(args))
     else:
