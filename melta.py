@@ -79,6 +79,19 @@ def filter_actions(args):
         tasks = [i for i in tasks if days_old(i)>=int(args.d)]
     return tasks
 
+def powerhour(tasks):
+    tasks = [i for i in tasks if i['time'] != 0 ]
+    tasks =sorted(tasks,key=lambda item: item['time'])
+    total_time_remaining=60
+    powertasks=[]
+    for a in tasks:
+        if a['time']<total_time_remaining:
+            powertasks.append(a)
+            total_time_remaining-=a['time']
+
+
+
+    return powertasks
 
 def print_actions(tasks):
     count_items= get_action_age_info_with_priority(tasks, lambda x:1, False)
@@ -170,6 +183,8 @@ def run_melta():
 	print_sorted_tasks([filter_actions(args)[0]])
     elif args.action == "time":
         print_time(filter_actions(args))
+    elif args.action == "powerhour":
+	print_sorted_tasks(powerhour(filter_actions(args)))
     else:
 	print "Error, missing action"
 
