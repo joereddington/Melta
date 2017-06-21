@@ -180,6 +180,7 @@ def run_melta():
     elif args.action == "random":
         print_random(filter_actions(args))
     elif args.action == "next":
+	args.o=True
 	print_sorted_tasks([filter_actions(args)[0]])
     elif args.action == "time":
         print_time(filter_actions(args))
