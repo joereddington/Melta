@@ -56,7 +56,14 @@ class meltaTest(TestCase):
         self.maxDiff = None
         self.assertMultiLineEqual(open('testinput/nextactions.md.sorted.open').read().strip(),naList_formated_string.strip())
 
+    def test_read_last_line_of_file(self):
+	filename="testinput/pri.txt"
+	
+	pass
 
+
+    def test_write_extra_line_of_file(self):
+	pass
 
 
 

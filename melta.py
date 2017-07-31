@@ -15,7 +15,28 @@ TIMESTAMP_FORMAT = '%y-%m-%d %H:%M'
 config = json.loads(open(os.path.dirname(os.path.abspath(__file__))+'/config.json').read())
 NEXTACTIONS_LOC=config["jurgen_location"] + '/nextactions.md'
 ALLACTIONS_LOC=config["jurgen_location"] + '/data/all_tasks.csv'
+PRI_LOC=config["jurgen_location"] + '/data/priority.txt'
 WAITACTIONS_LOC=config["jurgen_location"] + '/data/waitactions.md'
+
+def last_line_pri():
+	return open(PRI_LOC).readlines()[-1]
+
+def update_pri_if_different():
+     parser = setup_argument_list()
+     args=parser.parse_args(['sort','-o'])
+     now=print_actions(filter_actions(args)).strip()
+     before=last_line_pri().strip()
+     now_a=now[30:]
+     before_a=before[30:]
+     if now_a == before_a:
+	pass
+#	print "idenical, NO updated needed"
+     else:
+	    with open(PRI_LOC, 'a') as pri_file:
+		pri_file.write(now+"\n")
+#	print "There has been a change. Writing. "
+#     print "N"+now_a+"X"
+#     print "T"+before_a+"X"
 
 def get_sorted_actions():
     "returns a sorted list of nextActions"
@@ -96,7 +117,8 @@ def powerhour(tasks):
 def print_actions(tasks):
     count_items= get_action_age_info_with_priority(tasks, lambda x:1, False)
     pri_items= get_action_age_info_with_priority(tasks)
-    print " %d, %s,  %d, %d, %d, %d" % pri_items, ", %d, %d, %d, %d" % count_items
+    result= str(" %d, %s,  %d, %d, %d, %d" % pri_items + ", %d, %d, %d, %d" % count_items)
+    return result
 
 def print_time(tasks):
     running_total=0
@@ -172,7 +194,7 @@ def run_melta():
     parser = setup_argument_list()
     args=parser.parse_args()
     if args.action == "count":
-        print_actions(filter_actions(args))
+        print print_actions(filter_actions(args))
     elif args.action == "sort":
 	print_sorted_tasks(filter_actions(args))
     elif args.action == "add":
@@ -188,7 +210,9 @@ def run_melta():
 	print_sorted_tasks(powerhour(filter_actions(args)))
     else:
 	print "Error, missing action"
+    update_pri_if_different()
+
+
 
 if __name__ == '__main__':
-    run_melta()
-
+    run_melta() 
