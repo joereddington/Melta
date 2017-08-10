@@ -46,12 +46,12 @@ def get_sorted_actions():
         tasklist=[]
         for line in lines:
             task={}
-            task['timestamp']=line[4]
-            task['action']=line[3]
-            task['time']=int(line[2])
-            task['context']=line[1]
+            task['timestamp']=line[3]
+            task['action']=line[2]
+            task['time']=int(line[1])
+#            task['context']=line[1]
             task['priority']=line[0][6:]
-            task['extra']=line[5:]
+            task['extra']=line[4:]
             task['completed']=line[0][3:4]
             tasklist.append(task)
         tasklist =sorted(tasklist,key=lambda item: item['priority']+item['timestamp'])
@@ -72,13 +72,13 @@ def setup_argument_list():
     parser.add_argument("action", help="What to do/display: options are 'add', 'print', 'count', and 'info'  ")
     parser.add_argument("content",nargs='?', help='The action to do')
     parser.add_argument("delay", nargs='?', default=0, help='A delay to add in days')
-    parser.add_argument("context", nargs='?', default="0", help='The context for the action')
+#    parser.add_argument("context", nargs='?', default="0", help='The context for the action')
     parser.add_argument("priority", nargs='?', default="0", help='From 0 to 7 how important is this action')
     parser.add_argument("time", nargs='?', default="0", help='How long in minutes is this likely to take')
-    parser.add_argument('-c', nargs="?", help="if context_filter is activated then only actions in the relevant contexts (contexts are generally in 'bgthop0ry') are counted")
+#    parser.add_argument('-c', nargs="?", help="if context_filter is activated then only actions in the relevant contexts (contexts are generally in 'bgthop0ry') are counted")
     parser.add_argument('-m', action='store_true', help="show only marked tasks")
     parser.add_argument('-d', nargs="?" , help="Show only tasks that are at least this many days old")
-    parser.add_argument( '-n', nargs="?", help="reverse context filter, eliminates certain contexts from the count")
+#    parser.add_argument( '-n', nargs="?", help="reverse context filter, eliminates certain contexts from the count")
     parser.add_argument( '-o', action='store_true', help="Open tasks")
     parser.add_argument( '-s', action='store_true', help="use if called by a script or cron")
     return parser
@@ -88,14 +88,14 @@ def setup_argument_list():
 def filter_actions(args):
     "fetches the actions and runs a filter on them depending on the arguments"
     tasks = get_sorted_actions()
-    if args.c:
-        tasks = [i for i in tasks if i['context'] in args.c]
+#    if args.c:
+#        tasks = [i for i in tasks if i['context'] in args.c]
     if args.m:
         tasks = [i for i in tasks if i['completed'] in ["x","e"]]
     if args.o:
         tasks = [i for i in tasks if i['completed'] ==" "]
-    if args.n:
-        tasks = [i for i in tasks if i['context'] not in args.n]
+#    if args.n:
+#        tasks = [i for i in tasks if i['context'] not in args.n]
     if args.d:
         tasks = [i for i in tasks if days_old(i)>=int(args.d)]
     return tasks
@@ -169,7 +169,7 @@ def print_sorted_tasks(tasklist):
 
 
 def action_to_string(task):
-    return "- [%s] %s, %s, %2s, \"%s\", %s" % (task['completed'], task['priority'].strip(),  task['context'].strip(), task['time'], task['action'] , task['timestamp'])+ ''.join(task['extra'])
+    return "- [%s] %s,  %2s, \"%s\", %s" % (task['completed'], task['priority'].strip(),  task['time'], task['action'] , task['timestamp'])+ ''.join(task['extra'])
 
 def write_to_waiting_list(toprint):
        with open(WAITACTIONS_LOC, 'a') as actions_file:
@@ -180,7 +180,7 @@ def add(args):
 	deadline=today+datetime.timedelta(days=7)
 	date= deadline.strftime(TIMESTAMP_FORMAT)
         if args.content:
-            toprint = "- [ ] %s, %s, %s, \"%s\", %s\n" % (args.priority, args.context, args.time, args.content, date)
+            toprint = "- [ ] %s, %s, \"%s\", %s\n" % (args.priority, args.time, args.content, date)
             write_to_archive(str(date)+", "+toprint)
 	    if args.s:
 		    print toprint
