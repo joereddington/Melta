@@ -72,7 +72,7 @@ def setup_argument_list():
     parser.add_argument("action", help="What to do/display: options are 'add', 'print', 'count', and 'info'  ")
     parser.add_argument("content",nargs='?', help='The action to do')
     parser.add_argument("delay", nargs='?', default=0, help='A delay to add in days')
-#    parser.add_argument("context", nargs='?', default="0", help='The context for the action')
+    parser.add_argument("context", nargs='?', default="0", help='The context for the action')
     parser.add_argument("priority", nargs='?', default="0", help='From 0 to 7 how important is this action')
     parser.add_argument("time", nargs='?', default="0", help='How long in minutes is this likely to take')
 #    parser.add_argument('-c', nargs="?", help="if context_filter is activated then only actions in the relevant contexts (contexts are generally in 'bgthop0ry') are counted")
@@ -180,7 +180,7 @@ def add(args):
 	deadline=today+datetime.timedelta(days=7)
 	date= deadline.strftime(TIMESTAMP_FORMAT)
         if args.content:
-            toprint = "- [ ] %s, %s, \"%s\", %s\n" % (args.priority, args.time, args.content, date)
+            toprint = "- [ ] %s,%s, \"%s\", %s\n" % (args.priority, args.time, args.content, date)
             write_to_archive(str(date)+", "+toprint)
 	    if args.s:
 		    print toprint
