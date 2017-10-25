@@ -127,6 +127,8 @@ def print_time(tasks):
     hours=running_total //60
     minutes=running_total -hours*60
     print "The total time for the set is {} minutes ({}:{})".format(running_total,hours,minutes)
+    nowtime=time.time()+running_total*60
+    print "Target finish time: {}".format(time.ctime(nowtime))
 
 
 
