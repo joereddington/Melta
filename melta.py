@@ -55,6 +55,9 @@ def get_sorted_actions():
             task['extra']=line[4:]
             task['completed']=line[0][3:4]
             tasklist.append(task)
+          else:
+            print "The following line did NOT parse and was removed"
+            print line
         tasklist =sorted(tasklist,key=lambda item: item['priority']+item['timestamp'])
         return tasklist
 
