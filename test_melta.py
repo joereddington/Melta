@@ -28,11 +28,7 @@ class meltaTest(TestCase):
         nalist=melta.get_sorted_actions()
         self.assertEqual(nalist[0]['completed'],"x")
 
-    def test_completed_mark_on(self):
-        nalist=melta.get_sorted_actions()
-        self.assertEqual(nalist[1]['completed']," ")
-
-    def test_output_only_completed(self):
+    def test_output_only_completed_tasks(self):
         nalist=melta.get_sorted_actions()
         parser = melta.setup_argument_list()
         args=parser.parse_args(['sort','-m'])
@@ -44,7 +40,7 @@ class meltaTest(TestCase):
         self.maxDiff = None
         self.assertMultiLineEqual(open('testinput/nextactions.md.sorted.completed').read().strip(),naList_formated_string.strip())
 
-    def test_output_only_open(self):
+    def test_output_only_open_tasks(self):
         nalist=melta.get_sorted_actions()
         parser = melta.setup_argument_list()
         args=parser.parse_args(['sort','-o'])
@@ -58,7 +54,7 @@ class meltaTest(TestCase):
 
     def test_read_last_line_of_file(self):
 	filename="testinput/pri.txt"
-	
+
 	pass
 
 

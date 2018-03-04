@@ -39,12 +39,13 @@ def update_pri_if_different():
 #     print "T"+before_a+"X"
 
 def get_sorted_actions():
-    "returns a sorted list of nextActions"
+    "returns a sorted list of nextActions, strips out any line without four fields"
     with open(NEXTACTIONS_LOC, 'rU') as actions_file:
         reader = csv.reader(actions_file, skipinitialspace=True)
         lines = filter(None, reader)
         tasklist=[]
         for line in lines:
+          if len(line)>=4:
             task={}
             task['timestamp']=line[3]
             task['action']=line[2]
@@ -217,4 +218,4 @@ def run_melta():
 
 
 if __name__ == '__main__':
-    run_melta() 
+    run_melta()
