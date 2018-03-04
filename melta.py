@@ -22,6 +22,7 @@ def last_line_pri():
 	return open(PRI_LOC).readlines()[-1]
 
 def update_pri_if_different():
+   try:
      parser = setup_argument_list()
      args=parser.parse_args(['sort','-o'])
      now=print_actions(filter_actions(args)).strip()
@@ -34,6 +35,8 @@ def update_pri_if_different():
      else:
 	    with open(PRI_LOC, 'a') as pri_file:
 		pri_file.write(now+"\n")
+   except IOError:
+        print "Could NOT update priority log file"
 #	print "There has been a change. Writing. "
 #     print "N"+now_a+"X"
 #     print "T"+before_a+"X"
