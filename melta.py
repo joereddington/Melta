@@ -1,7 +1,9 @@
 #!/usr/bin/python
 "A set of functions designed to make it easier to process a next actions list"
 from __future__ import division
+from __future__ import print_function
 import argparse
+import sys
 import csv
 import random
 import datetime
@@ -17,6 +19,9 @@ NEXTACTIONS_LOC=config["jurgen_location"] + '/nextactions.md'
 ALLACTIONS_LOC=config["jurgen_location"] + '/data/all_tasks.csv'
 PRI_LOC=config["jurgen_location"] + '/data/priority.txt'
 WAITACTIONS_LOC=config["jurgen_location"] + '/data/waitactions.md'
+
+def eprint(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)#from https://stackoverflow.com/a/14981125/170243
 
 def last_line_pri():
 	return open(PRI_LOC).readlines()[-1]
@@ -36,7 +41,7 @@ def update_pri_if_different():
 	    with open(PRI_LOC, 'a') as pri_file:
 		pri_file.write(now+"\n")
    except IOError:
-        print "Could NOT update priority log file"
+        eprint("Could NOT update priority log file")
 #	print "There has been a change. Writing. "
 #     print "N"+now_a+"X"
 #     print "T"+before_a+"X"
@@ -59,8 +64,8 @@ def get_sorted_actions():
             task['completed']=line[0][3:4]
             tasklist.append(task)
           else:
-            print "The following line did NOT parse and was removed"
-            print line
+            eprint( "The following line did NOT parse and was removed")
+            eprint(line)
         tasklist =sorted(tasklist,key=lambda item: item['priority']+item['timestamp'])
         return tasklist
 
@@ -133,9 +138,9 @@ def print_time(tasks):
 	running_total+=task['time']
     hours=running_total //60
     minutes=running_total -hours*60
-    print "The total time for the set is {} minutes ({}:{})".format(running_total,hours,minutes)
+    print("The total time for the set is {} minutes ({}:{})".format(running_total,hours,minutes))
     nowtime=time.time()+running_total*60
-    print "Target finish time: {}".format(time.ctime(nowtime))
+    print("Target finish time: {}".format(time.ctime(nowtime)))
 
 
 
@@ -174,7 +179,7 @@ def print_random(tasklist):
 
 def print_sorted_tasks(tasklist):
 	for task in tasklist:
-	   print action_to_string(task)
+	   print(action_to_string(task))
 
 
 def action_to_string(task):
@@ -192,7 +197,7 @@ def add(args):
             toprint = "- [ ] %s,%s, \"%s\", %s\n" % (args.priority, args.time, args.content, date)
             write_to_archive(str(date)+", "+toprint)
 	    if args.s:
-		    print toprint
+		    print(toprint)
 		    write_to_waiting_list(toprint)
             else:
 		    write_to_file(toprint)
@@ -203,7 +208,7 @@ def run_melta():
     parser = setup_argument_list()
     args=parser.parse_args()
     if args.action == "count":
-        print print_actions(filter_actions(args))
+        print(print_actions(filter_actions(args)))
     elif args.action == "sort":
 	print_sorted_tasks(filter_actions(args))
     elif args.action == "add":
@@ -218,7 +223,7 @@ def run_melta():
     elif args.action == "powerhour":
 	print_sorted_tasks(powerhour(filter_actions(args)))
     else:
-	print "Error, missing action"
+	print("Error, missing action")
     update_pri_if_different()
 
 
