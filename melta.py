@@ -55,7 +55,7 @@ def get_sorted_actions():
         tasklist=[]
         for line in lines:
           if len(line)>=4:
-	   if "- [" in line[0]: 
+	   if "- [" in line[0]:
 		    task={}
 		    task['timestamp']=line[3]
 		    task['action']=line[2]
@@ -80,7 +80,6 @@ def write_to_archive(toprint):
         actions_file.write(toprint )
 
 def setup_argument_list():
-    "creates and parses the argument list for naCount"
     parser = argparse.ArgumentParser(
         description="manages a todo list")
     parser.add_argument("action", help="What to do/display: options are 'add', 'print', 'count', and 'info'  ")
@@ -129,9 +128,16 @@ def powerhour(tasks):
     return powertasks
 
 def print_actions(tasks):
-    count_items= get_action_age_info_with_priority(tasks, lambda x:1, False)
+    count_items= get_action_age_info_with_priority(tasks, lambda x:1)
     pri_items= get_action_age_info_with_priority(tasks)
-    result= str(" %d, %s,  %d, %d, %d, %d" % pri_items + ", %d, %d, %d, %d" % count_items)
+#	return (now, datetime.date.today(), time.time(), weekold, dayold, threedayold)
+    result="""State of Next Actions as of {}
+Now:   {}({})
+1 day  {}({})
+3 day  {}({})
+7 day  {}({})
+""".format(pri_items[1],pri_items[0],count_items[0],pri_items[4],count_items[4],pri_items[5],count_items[5],pri_items[3],count_items[3])
+   # result= str("Number:%d (0), %s,  %d, %d, %d, %d" % pri_items + "\n, %d, %d, %d, %d" % count_items)
     return result
 
 def print_time(tasks):
