@@ -21,7 +21,8 @@ PRI_LOC=config["jurgen_location"] + '/data/priority.txt'
 WAITACTIONS_LOC=config["jurgen_location"] + '/data/waitactions.md'
 
 def eprint(*args, **kwargs):
-    print(*args, file=sys.stderr, **kwargs)#from https://stackoverflow.com/a/14981125/170243
+	pass
+#    print(*args, file=sys.stderr, **kwargs)#from https://stackoverflow.com/a/14981125/170243
 
 def last_line_pri():
 	return open(PRI_LOC).readlines()[-1]
@@ -54,15 +55,16 @@ def get_sorted_actions():
         tasklist=[]
         for line in lines:
           if len(line)>=4:
-            task={}
-            task['timestamp']=line[3]
-            task['action']=line[2]
-            task['time']=int(line[1])
-#            task['context']=line[1]
-            task['priority']=line[0][6:]
-            task['extra']=line[4:]
-            task['completed']=line[0][3:4]
-            tasklist.append(task)
+	   if "- [" in line[0]: 
+		    task={}
+		    task['timestamp']=line[3]
+		    task['action']=line[2]
+		    task['time']=int(line[1])
+	#            task['context']=line[1]
+		    task['priority']=line[0][6:]
+		    task['extra']=line[4:]
+		    task['completed']=line[0][3:4]
+		    tasklist.append(task)
           else:
             eprint( "The following line did NOT parse and was removed")
             eprint(line)
