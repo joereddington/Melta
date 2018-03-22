@@ -30,8 +30,8 @@ def last_line_pri():
 def update_pri_if_different():
    try:
      parser = setup_argument_list()
-     args=parser.parse_args(['sort','-o'])
-     now=print_actions(filter_actions(args)).strip()
+     args=parser.parse_args(['sort','-o', '-s'])
+     now=print_actions(filter_actions(args),args).strip()
      before=last_line_pri().strip()
      now_a=now[30:]
      before_a=before[30:]
@@ -127,18 +127,18 @@ def powerhour(tasks):
 
     return powertasks
 
-def print_actions(tasks):
-    count_items= get_action_age_info_with_priority(tasks, lambda x:1)
+def print_actions(tasks,args):
+    count_items= get_action_age_info_with_priority(tasks, lambda x:1, False)
     pri_items= get_action_age_info_with_priority(tasks)
-#	return (now, datetime.date.today(), time.time(), weekold, dayold, threedayold)
-    result="""State of Next Actions as of {}
+    if args.s:
+       result= str(" %d, %s,  %d, %d, %d, %d" % pri_items + ", %d, %d, %d, %d" % count_items)
+       return result
+    return """State of Next Actions as of {}
 Now:   {}({})
 1 day  {}({})
 3 day  {}({})
 7 day  {}({})
 """.format(pri_items[1],pri_items[0],count_items[0],pri_items[4],count_items[4],pri_items[5],count_items[5],pri_items[3],count_items[3])
-   # result= str("Number:%d (0), %s,  %d, %d, %d, %d" % pri_items + "\n, %d, %d, %d, %d" % count_items)
-    return result
 
 def print_time(tasks):
     running_total=0
@@ -216,7 +216,7 @@ def run_melta():
     parser = setup_argument_list()
     args=parser.parse_args()
     if args.action == "count":
-        print(print_actions(filter_actions(args)))
+        print(print_actions(filter_actions(args),args))
     elif args.action == "sort":
 	print_sorted_tasks(filter_actions(args))
     elif args.action == "add":
