@@ -134,11 +134,11 @@ def print_actions(tasks,args):
        result= str(" %d, %s,  %d, %d, %d, %d" % pri_items + ", %d, %d, %d, %d" % count_items)
        return result
     return """State of Next Actions as of {}
-Now:   {}({})
-1 day  {}({})
+Now:   {}({})""".format(pri_items[1],pri_items[0],count_items[0])+"""
+1 day  {}({})""".format(pri_items[4],count_items[2])+"""
 3 day  {}({})
 7 day  {}({})
-""".format(pri_items[1],pri_items[0],count_items[0],pri_items[4],count_items[4],pri_items[5],count_items[5],pri_items[3],count_items[3])
+""".format(pri_items[5],count_items[3],pri_items[3],count_items[1])
 
 def print_time(tasks):
     running_total=0
