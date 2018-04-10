@@ -3,9 +3,18 @@ import numpy as np
 import time
 import matplotlib.pyplot as plt
 import os
+import argparse
 
 #Todo
-#1 merge this with the other graph files - make a class that records the source, destination, and time period and then works. 
+
+
+# Plan for adding the long term charting
+# 1. Get working locally by adding a argparse that includes the source, and number of days
+# 2. Include the compress function and add a switch to use it.
+# 3. That means that all we need is the right commands and we're laughing. This
+# is actually a reasonable
+
+# Next action - argparse
 
 
 SOURCE= os.environ['JURGEN']+"Jurgen/data/priority.txt"
@@ -31,10 +40,10 @@ class ProductivityPlotter():
 	def processFile(self):
 		dayold, weekold,threedayold,seconds,now=([],[],[],[],[])
 		count=0
-		with open(self.source) as file: 
+		with open(self.source) as file:
 			lastrawline="Hello"
 			rawline = file.readline()
-			#the array we have is going to be horizonal when we need vertical. So we have to deal with that. 
+			#the array we have is going to be horizonal when we need vertical. So we have to deal with that.
 			for rawline in file:
 				splitline=rawline.split(',')
 				dayold.insert(0,int(splitline[4]))
@@ -42,7 +51,7 @@ class ProductivityPlotter():
 				weekold.insert(0,int(splitline[3]))
 				seconds.insert(0,int(splitline[2]))
 				now.insert(0,int(splitline[0]))
-				count=count+1	
+				count=count+1
 		return (seconds,now,dayold,threedayold,weekold)
 
 	def graph(self,seconds,now, dayold, threedayold,weekold):
