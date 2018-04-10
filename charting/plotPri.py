@@ -4,6 +4,7 @@ import time
 import matplotlib.pyplot as plt
 import os
 import argparse
+import calendar_helper_functions as icalhelper
 
 #Todo
 
@@ -38,18 +39,14 @@ class ProductivityPlotter():
 	def myround(self,x, base=24*3600):
 	    return int(base * round(float(x)/base))
 
-	def processFile(self):
+	def array_to_lists(self,content):
                 import calendar
                 import time
                 current_seconds=calendar.timegm(time.gmtime())
                 seconds_at_start=current_seconds-(60*60*24*self.days)
 		dayold, weekold,threedayold,seconds,now=([],[],[],[],[])
 		count=0
-		with open(self.source) as file:
-			lastrawline="Hello"
-			rawline = file.readline()
-			#the array we have is going to be horizonal when we need vertical. So we have to deal with that.
-			for rawline in file:
+                for rawline in content:
 			     splitline=rawline.split(',')
                              if seconds_at_start < splitline[2]:
                                 dayold.insert(0,int(splitline[4]))
@@ -85,7 +82,7 @@ class ProductivityPlotter():
 		plt.savefig(self.dest)
 
 	def get_graph(self):
-		a=self.processFile()
+		a=self.array_to_lists(icalhelper.get_content(self.source))
 		self.graph(a[0],a[1],a[2],a[3],a[4])
 		print "%s written with output from %s"%(self.dest, self.source)
 
@@ -100,6 +97,24 @@ def setup_argument_list():
     parser.set_defaults(verbatim=False)
     return parser.parse_args()
 
+
+
+def compress(filename):
+        file = open(filename)
+        lastrawline = "Hello"
+        rawline = file.readline()
+        # the array we have is going to be horizonal when we need vertical. So
+        # we have to deal with that.
+        count = 0
+        splitline = "hello world".split()
+        outString = []
+        for rawline in file:
+                lastsplitline = splitline
+                splitline = rawline.split()
+                count = count+1
+                if splitline[1] != lastsplitline[1]:
+                        outString.append(rawline)
+        return outString
 
 
 if __name__ == "__main__":
