@@ -26,17 +26,16 @@ class ProductivityPlotter():
 
 
 	"Class designed to take a Jurgen-formatted file and turn it into a graph"
-	def __init__(self,args,dest,days):
+	def __init__(self,args,dest):
                 self.args=args
 		self.source=args.f
 		self.dest=dest
-		self.days=days
+		self.days=int(args.d)
 
 	def smooth(self,y, box_pts=SMOOTHING):
 	    box = np.ones(box_pts)/box_pts
 	    y_smooth = np.convolve(y, box, mode='same')
 	    return y_smooth#from stackexcahnge
-
 
 	def array_to_lists(self,content):
                 import calendar
@@ -116,6 +115,6 @@ def compress(content):
 
 if __name__ == "__main__":
         args=setup_argument_list()
-	a=ProductivityPlotter(args,DEST,DAYS)
+	a=ProductivityPlotter(args,DEST)
 	a.get_graph()
 
