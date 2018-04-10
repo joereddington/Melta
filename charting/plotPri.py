@@ -26,8 +26,9 @@ class ProductivityPlotter():
 
 
 	"Class designed to take a Jurgen-formatted file and turn it into a graph"
-	def __init__(self,source,dest,days):
-		self.source=source
+	def __init__(self,args,dest,days):
+                self.args=args
+		self.source=args.f
 		self.dest=dest
 		self.days=days
 
@@ -36,8 +37,6 @@ class ProductivityPlotter():
 	    y_smooth = np.convolve(y, box, mode='same')
 	    return y_smooth#from stackexcahnge
 
-	def myround(self,x, base=24*3600):
-	    return int(base * round(float(x)/base))
 
 	def array_to_lists(self,content):
                 import calendar
@@ -57,9 +56,6 @@ class ProductivityPlotter():
 		return (seconds,now,dayold,threedayold,weekold)
 
 	def graph(self,seconds,now, dayold, threedayold,weekold):
-                print len(seconds)
-		#dis=4*24*60*60
-		#x = np.array(seconds[-dis:])
 		x = np.array(seconds)
 		ynow  = self.smooth(np.array(now))
 		yday  = self.smooth(np.array(dayold))
@@ -82,7 +78,11 @@ class ProductivityPlotter():
 		plt.savefig(self.dest)
 
 	def get_graph(self):
-		a=self.array_to_lists(icalhelper.get_content(self.source))
+                a=[]
+                if self.args.c:
+                    a=self.array_to_lists(compress(icalhelper.get_content(self.source)))
+                else:
+                    a=self.array_to_lists(icalhelper.get_content(self.source))
 		self.graph(a[0],a[1],a[2],a[3],a[4])
 		print "%s written with output from %s"%(self.dest, self.source)
 
@@ -91,24 +91,21 @@ def setup_argument_list():
     "creates and parses the argument list for Watson"
     parser = argparse.ArgumentParser( description="creates the priority chart")
     parser.add_argument('-f', nargs="?", help="File to use for data")
-    parser.add_argument('-c', nargs="?" , help="Should we compress")
+    parser.add_argument('-o', nargs="?" , help="outputfile")
     parser.add_argument( '-d', nargs="?", help="days")
-    parser.add_argument( '-o', action='store_true', help="outputfile")
+    parser.add_argument( '-c', action='store_true', help="should we compress")
     parser.set_defaults(verbatim=False)
     return parser.parse_args()
 
 
 
-def compress(filename):
-        file = open(filename)
-        lastrawline = "Hello"
-        rawline = file.readline()
+def compress(content):
         # the array we have is going to be horizonal when we need vertical. So
         # we have to deal with that.
         count = 0
         splitline = "hello world".split()
         outString = []
-        for rawline in file:
+        for rawline in content:
                 lastsplitline = splitline
                 splitline = rawline.split()
                 count = count+1
@@ -119,7 +116,6 @@ def compress(filename):
 
 if __name__ == "__main__":
         args=setup_argument_list()
-        print args.f
-	a=ProductivityPlotter(args.f,DEST,DAYS)
+	a=ProductivityPlotter(args,DEST,DAYS)
 	a.get_graph()
 
