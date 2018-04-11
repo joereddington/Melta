@@ -91,7 +91,7 @@ def setup_argument_list():
     parser = argparse.ArgumentParser( description="creates the priority chart")
     parser.add_argument('-f', nargs="?", help="File to use for data")
     parser.add_argument('-o', nargs="?" , help="outputfile")
-    parser.add_argument( '-d', nargs="?", help="days")
+    parser.add_argument( '-d', nargs="?", help="days", default=7)
     parser.add_argument( '-c', action='store_true', help="should we compress")
     parser.set_defaults(verbatim=False)
     return parser.parse_args()
