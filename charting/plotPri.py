@@ -31,6 +31,7 @@ class ProductivityPlotter():
 		self.source=args.f
 		self.dest=dest
 		self.days=int(args.d)
+                self.ticklength=int(args.t)
 
 	def smooth(self,y, box_pts=SMOOTHING):
 	    box = np.ones(box_pts)/box_pts
@@ -70,7 +71,7 @@ class ProductivityPlotter():
                 seconds_at_start=current_seconds-(60*60*24*self.days)
 		plt.xlim(seconds_at_start, current_seconds-1000)
 		plt.ylim(ymax=500)
-		ticks=np.arange(seconds_at_start,current_seconds,24*3600)
+		ticks=np.arange(seconds_at_start,current_seconds,(current_seconds-seconds_at_start)/self.ticklength)
 		labels=[time.strftime("%a", time.gmtime(x)) for x in ticks]
 		plt.xticks(ticks,labels)
 		plt.grid()
@@ -92,6 +93,7 @@ def setup_argument_list():
     parser.add_argument('-f', nargs="?", help="File to use for data")
     parser.add_argument('-o', nargs="?" , help="outputfile")
     parser.add_argument( '-d', nargs="?", help="days", default=7)
+    parser.add_argument( '-t', nargs="?", help="ticklength", default=7)
     parser.add_argument( '-c', action='store_true', help="should we compress")
     parser.set_defaults(verbatim=False)
     return parser.parse_args()
