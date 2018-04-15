@@ -6,8 +6,6 @@ import os
 #from scipy.interpolate import spline
 
 
-def myround(x, base=24*3600):
-        return int(base * round(float(x)/base))
 
 
 def processFile(filename):
