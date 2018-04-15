@@ -30,6 +30,8 @@ class ProductivityPlotter():
                 self.args=args
 		self.source=args.f
 		self.dest=dest
+                if args.o:
+                    self.dest=args.o
 		self.days=int(args.d)
                 self.ticklength=int(args.t)
 
