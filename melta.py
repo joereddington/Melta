@@ -12,6 +12,7 @@ import os
 import time
 import csv
 import json
+import re
 
 TIMESTAMP_FORMAT = '%y-%m-%d %H:%M'
 config = json.loads(open(os.path.dirname(os.path.abspath(__file__))+'/config.json').read())
@@ -68,7 +69,7 @@ def get_sorted_actions():
           else:
             eprint( "The following line did NOT parse and was removed")
             eprint(line)
-        tasklist =sorted(tasklist,key=lambda item: item['priority']+item['timestamp'])
+        tasklist =sorted(tasklist,key=lambda item: re.sub("\D","",item['priority'])+item['timestamp'])
         return tasklist
 
 def write_to_file(toprint):
