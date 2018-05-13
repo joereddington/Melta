@@ -171,7 +171,11 @@ def tasks_this_old(tasklist, scorer, days):
     return count
 
 
-def get_action_age_info_with_priority(tasklist, scorer=lambda x:7-int(x['priority'][-1]), time_print=True):
+def priority_to_number(input):
+    output=re.sub("\D","1", input[-1])#we take the last digit and then if it's text it's 1
+    return int(output)
+
+def get_action_age_info_with_priority(tasklist, scorer=lambda x:7-priority_to_number(x['priority']), time_print=True):
     "prints out the number of nextactions of each age in a current nextactions"
     now=tasks_this_old(tasklist,scorer,0)
     dayold=tasks_this_old(tasklist,scorer,1)

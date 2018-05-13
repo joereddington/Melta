@@ -28,6 +28,12 @@ class meltaTest(TestCase):
         nalist=melta.get_sorted_actions()
         self.assertEqual(nalist[0]['completed'],"x")
 
+    def test_priority_of_names(self):
+        nalist=melta.get_sorted_actions()
+        score=melta.get_action_age_info_with_priority(nalist)
+        self.assertEqual(score[0],209)
+
+
     def test_output_only_completed_tasks(self):
         nalist=melta.get_sorted_actions()
         parser = melta.setup_argument_list()
