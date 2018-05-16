@@ -71,7 +71,7 @@ class ProductivityPlotter():
                 import time
                 current_seconds=calendar.timegm(time.gmtime())
                 seconds_at_start=current_seconds-(60*60*24*self.days)
-		plt.xlim(seconds_at_start, current_seconds-1000)
+		plt.xlim(seconds_at_start, current_seconds-5000)
 		plt.ylim(ymax=500)
 		ticks=np.arange(seconds_at_start,current_seconds,(current_seconds-seconds_at_start)/self.ticklength)
 		labels=[time.strftime("%a", time.gmtime(x)) for x in ticks]
