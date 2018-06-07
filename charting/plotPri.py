@@ -84,7 +84,7 @@ class ProductivityPlotter():
 		#ticks=np.arange(seconds_at_start-(distance_between_ticks/2),current_seconds+(distance_between_ticks/2),distance_between_ticks)
 		if self.args.l:
 			print "L branch"
-			labels=[time.strftime("%b", time.gmtime(x)) for x in ticks]
+			labels=[time.strftime("%b", time.gmtime(x+14*60*60*24)) for x in ticks]
 		else:
 			print "a branch"
 			labels=[time.strftime("%a", time.gmtime(x)) for x in ticks]
