@@ -72,16 +72,27 @@ class ProductivityPlotter():
                 import time
                 current_seconds=calendar.timegm(time.gmtime())
                 seconds_at_start=current_seconds-(60*60*24*self.days)
-		plt.xlim(seconds_at_start, current_seconds)
+		plt.xlim(seconds_at_start, current_seconds-5000)
 		plt.ylim(ymax=500)
 		distance_between_ticks=(current_seconds-seconds_at_start)/self.number_of_ticks
-		ticks=np.arange(seconds_at_start-(distance_between_ticks/2),current_seconds+(distance_between_ticks/2),distance_between_ticks)
-		labels=[time.strftime("%a", time.gmtime(x)) for x in ticks]
-		labels.pop(0)
+		print "Distance between ticks: {}".format(distance_between_ticks)
+		print seconds_at_start
+		print "becomes"
+		seconds_at_start=(seconds_at_start/distance_between_ticks)*distance_between_ticks
+		print seconds_at_start
+		ticks=np.arange(seconds_at_start,current_seconds,distance_between_ticks)
+		#ticks=np.arange(seconds_at_start-(distance_between_ticks/2),current_seconds+(distance_between_ticks/2),distance_between_ticks)
+		if self.args.l:
+			print "L branch"
+			labels=[time.strftime("%b", time.gmtime(x)) for x in ticks]
+		else:
+			print "a branch"
+			labels=[time.strftime("%a", time.gmtime(x)) for x in ticks]
+		print[time.strftime("%b %d %Y %H:%M:%S", time.gmtime(x)) for x in ticks]
+#		labels.pop(0)
 		print labels
+		plt.grid()
 		plt.xticks(ticks,labels)
-#		plt.xticks(minorticks,labels,minor=True)
-#		plt.grid()
 		plt.savefig(self.dest)
 
 	def get_graph(self):
@@ -102,6 +113,7 @@ def setup_argument_list():
     parser.add_argument( '-d', nargs="?", help="days", default=7)
     parser.add_argument( '-t', nargs="?", help="number of ticks", default=7)
     parser.add_argument( '-c', action='store_true', help="should we compress")
+    parser.add_argument( '-l', action='store_true', help="Mark in months")
     parser.set_defaults(verbatim=False)
     return parser.parse_args()
 
