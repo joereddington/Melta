@@ -33,7 +33,7 @@ class ProductivityPlotter():
                 if args.o:
                     self.dest=args.o
 		self.days=int(args.d)
-                self.ticklength=int(args.t)
+                self.number_of_ticks=int(args.t)
 
 	def smooth(self,y, box_pts=SMOOTHING):
 	    box = np.ones(box_pts)/box_pts
@@ -63,20 +63,25 @@ class ProductivityPlotter():
 		yday  = self.smooth(np.array(dayold))
 		y3day = self.smooth(np.array(threedayold))
 		yweek = self.smooth(np.array(weekold))
-		plt.plot(x,ynow, 'blue')
-		plt.plot(x,yday, 'green')
-		plt.plot(x,y3day,'purple')
-		plt.plot(x,yweek, 'red')
+		blue, =plt.plot(x,ynow, 'blue')
+		green, =plt.plot(x,yday, 'green')
+		purple, =plt.plot(x,y3day,'purple')
+		red, =plt.plot(x,yweek, 'red', label="7 days")
+		plt.legend([blue, green, purple, red], ['All tasks', '1 day old', '3 days old', '7 days old'])
                 import calendar
                 import time
                 current_seconds=calendar.timegm(time.gmtime())
                 seconds_at_start=current_seconds-(60*60*24*self.days)
-		plt.xlim(seconds_at_start, current_seconds-5000)
+		plt.xlim(seconds_at_start, current_seconds)
 		plt.ylim(ymax=500)
-		ticks=np.arange(seconds_at_start,current_seconds,(current_seconds-seconds_at_start)/self.ticklength)
+		distance_between_ticks=(current_seconds-seconds_at_start)/self.number_of_ticks
+		ticks=np.arange(seconds_at_start-(distance_between_ticks/2),current_seconds+(distance_between_ticks/2),distance_between_ticks)
 		labels=[time.strftime("%a", time.gmtime(x)) for x in ticks]
+		labels.pop(0)
+		print labels
 		plt.xticks(ticks,labels)
-		plt.grid()
+#		plt.xticks(minorticks,labels,minor=True)
+#		plt.grid()
 		plt.savefig(self.dest)
 
 	def get_graph(self):
@@ -95,7 +100,7 @@ def setup_argument_list():
     parser.add_argument('-f', nargs="?", help="File to use for data")
     parser.add_argument('-o', nargs="?" , help="outputfile")
     parser.add_argument( '-d', nargs="?", help="days", default=7)
-    parser.add_argument( '-t', nargs="?", help="ticklength", default=7)
+    parser.add_argument( '-t', nargs="?", help="number of ticks", default=7)
     parser.add_argument( '-c', action='store_true', help="should we compress")
     parser.set_defaults(verbatim=False)
     return parser.parse_args()

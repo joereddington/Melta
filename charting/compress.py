@@ -25,8 +25,8 @@ def processFile(filename):
                         outString.append(rawline)
         return outString
 
-toFile= processFile(os.environ['JURGEN'] + "Jurgen/tracking/priority.txt")
+toFile= processFile(os.environ['JURGEN'] + "Jurgen/data/priority.txt")
 
-f = open(os.environ['JURGEN'] + "Jurgen/tracking/priCompressed.txt", 'w')
+f = open(os.environ['JURGEN'] + "priCompressed.txt", 'w')
 for item in toFile:
         f.write("%s" % item)
