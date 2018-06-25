@@ -226,7 +226,7 @@ def run_melta():
         print(print_actions(filter_actions(args),args))
     elif args.action == "sort":
 	print_sorted_tasks(filter_actions(args))
-    elif args.action == "time":
+    elif args.action == "sorttime":
 	print_sorted_tasks(filter_actions(args))
 
     elif args.action == "add":
