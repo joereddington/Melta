@@ -26,12 +26,13 @@ class meltaTest(TestCase):
 
     def test_sort_age(self):
         parser = melta.setup_argument_list()
-        args=parser.parse_args(['sort','-m'])
-        nalist=melta.get_sorted_actions()
+        args=parser.parse_args(['time'])
+        nalist=melta.filter_actions(args)
         nalist_formated = [] #   [[melta.action_to_string(x) for x in nalist]]
         for x in nalist:
             nalist_formated.append(melta.action_to_string(x))
         naList_formated_string= "\n".join(nalist_formated)
+        print naList_formated_string
         self.maxDiff = None
         self.assertMultiLineEqual(open('testinput/nextactions.md.sortedage').read().strip(),naList_formated_string.strip())
 

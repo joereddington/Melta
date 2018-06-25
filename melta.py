@@ -48,7 +48,7 @@ def update_pri_if_different():
 #     print "N"+now_a+"X"
 #     print "T"+before_a+"X"
 
-def get_sorted_actions():
+def get_sorted_actions(sortfunction=lambda item: re.sub("\D","",item['priority'])+item['timestamp']):
     "returns a sorted list of nextActions, strips out any line without four fields"
     with open(NEXTACTIONS_LOC, 'rU') as actions_file:
         reader = csv.reader(actions_file, skipinitialspace=True)
@@ -69,7 +69,7 @@ def get_sorted_actions():
           else:
             eprint( "The following line did NOT parse and was removed")
             eprint(line)
-        tasklist =sorted(tasklist,key=lambda item: re.sub("\D","",item['priority'])+item['timestamp'])
+        tasklist =sorted(tasklist,key=sortfunction)
         return tasklist
 
 def write_to_file(toprint):
@@ -102,6 +102,8 @@ def setup_argument_list():
 def filter_actions(args):
     "fetches the actions and runs a filter on them depending on the arguments"
     tasks = get_sorted_actions()
+    if args.action=="time":
+        tasks = get_sorted_actions(lambda item: re.sub("-","",item['timestamp']))
 #    if args.c:
 #        tasks = [i for i in tasks if i['context'] in args.c]
     if args.m:
@@ -224,6 +226,9 @@ def run_melta():
         print(print_actions(filter_actions(args),args))
     elif args.action == "sort":
 	print_sorted_tasks(filter_actions(args))
+    elif args.action == "time":
+	print_sorted_tasks(filter_actions(args))
+
     elif args.action == "add":
 	add(args)
     elif args.action == "random":
